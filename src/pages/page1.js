@@ -1,4 +1,4 @@
-// AUTHOR: NGUYEN VAN A - ID: 20221111
+// AUTHOR: NGUYỄN QUỐC ĐẠT - 20231570
 import * as THREE from 'three';
 
 export function init(container) {
