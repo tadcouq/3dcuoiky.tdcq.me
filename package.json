@@ -17,7 +17,7 @@
     "Nguyen Dat <info@tdcq.me> (https://tdcq.me/)",
     "Tran Tung <tung.td231646@sis.hust.edu.vn>"
   ],
-  "bugs": "https://github.com/whatever/package/issues",
+  "bugs": "https://github.com/tadcouq/3dgiuaky.tdcq.me/issues",
   "license": "ISC",
   "description": "Bài tập lớn 3D nhóm 4 cuối kỳ học phần AC2020 mã lớp 155466, học kỳ 20241 tại Đại học Bách Khoa Hà Nội.",
   "dependencies": {
