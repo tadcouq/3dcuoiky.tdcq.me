@@ -1,0 +1,28 @@
+{
+  "name": "3dcuoiky.tdcq.me",
+  "private": true,
+  "homepage": "https://3dcuoiky.tdcq.me/",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "author": "dinh-van.nguyen",
+  "contributors": [
+    "Nguyen Dat <info@tdcq.me> (https://tdcq.me/)",
+    "Tran Tung <tung.td231646@sis.hust.edu.vn>"
+  ],
+  "bugs": "https://github.com/whatever/package/issues",
+  "license": "ISC",
+  "description": "Bài tập lớn 3D nhóm 4 cuối kỳ học phần AC2020 mã lớp 155466, học kỳ 20241 tại Đại học Bách Khoa Hà Nội.",
+  "dependencies": {
+    "gh-pages": "^6.2.0",
+    "three": "^0.171.0",
+    "vite": "^6.0.5"
+  }
+}
