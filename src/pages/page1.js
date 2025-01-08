@@ -1,11 +1,15 @@
 // AUTHOR: NGUYỄN QUỐC ĐẠT - 20231570
+// Phiên bản ban đầu và credit các asset đã sử dụng có thể xem qua: https://github.com/tadcouq/AC2020
+/* Mục tiêu: Hiển thị mô hình 3D của chiếc xe đua RB19 tại đường đua Hà Nội, đồng thời qua đây cũng là trang giới thiệu về đường đua, xe đua 
+và câu chuyện về việc tổ chức giải đua không thành do tham nhũng, quan liêu và không đúng thời điểm tại Việt Nam*/
+// Địa điểm: Hanoi Circuit, Cột Đồng Hồ Mỹ Đình, Nam Từ Liêm, Hà Nội
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
+// Set up scene
 const page1scene = new THREE.Scene();
-
 const renderer = new THREE.WebGLRenderer({
     alpha: true,
     antialias: false
@@ -16,24 +20,31 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.VSMShadowMap;
 document.body.appendChild(renderer.domElement);
 
-const defcamera = new THREE.PerspectiveCamera(
+// Camera
+const camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight, 
     0.1, 
     1000
 );
-defcamera.position.set(5, 5, 5);
-defcamera.lookAt(0, 2, 0);
+camera.position.set(5, 5, 5);
+camera.lookAt(0, 2, 0);
+let currentCamera = camera;
 
-const controls = new OrbitControls(defcamera, renderer.domElement);
+// OrbitControls
+const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.target.set(0, 2, 0);
 controls.update();
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 20);
+// Lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 0);
 page1scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
+const daylight = new THREE.HemisphereLight(0xffffff, 0x000000, 1);
+page1scene.add(daylight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 3);
 directionalLight.position.set(3.52, 10.51, 10);
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.top = 2;
@@ -44,12 +55,37 @@ directionalLight.shadow.camera.near = 0.1;
 directionalLight.shadow.camera.far = 40;
 page1scene.add(directionalLight);
 
+
+// Skybox background
+const daybg = new THREE.CubeTextureLoader()
+    .setPath('./Tex/day_skybox/')
+    .load(
+        [
+            'px.png',
+            'nx.png',
+            'py.png',
+            'ny.png',
+            'pz.png',
+            'nz.png'
+        ],
+        // onLoad callback
+        () => {
+            console.log('Skybox images loaded successfully');
+        },
+        // onProgress callback
+        undefined,
+        // onError callback
+        (error) => {
+            console.error('Error loading skybox images:', error);
+        }
+    );
+
+page1scene.background = daybg;
+
+// Ground
 const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(500, 500),
-    new THREE.ShadowMaterial({ 
-        color: 0x808080, 
-        opacity: 0.5 
-    })
+    new THREE.MeshStandardMaterial({ color: 0x808080 })
 );
 ground.rotation.x = Math.PI / 2;
 ground.receiveShadow = true;
@@ -81,8 +117,15 @@ loader.load(
     },
 );
 
-// xe
-loader.load(
+// Car
+const cameras = {};
+const rb19 = new GLTFLoader();
+const rb19DracoLoader = new DRACOLoader();
+rb19DracoLoader.setDecoderPath( '/draco/' );
+rb19.setDRACOLoader( rb19DracoLoader );
+
+let mixer;
+rb19.load(
     './3D/01_rb19.glb',
 
     function ( gltf ) {
@@ -100,7 +143,8 @@ loader.load(
             cameras[`rb19_${index+1}`] = cam;
         });
 
-    page1scene.add(model);
+        createCameraDropdown();
+        page1scene.add(model);
     },
 
     function ( xhr ) {
@@ -112,46 +156,56 @@ loader.load(
     }
 );
 
-// Tổng hợp camera
-const cameras = {
-    default: defcamera,
-    // còn cam của model sẽ tự add chèn vào dưới đây dưới dạng `"tên gì đó"_(index+1)`
+function createCameraDropdown() {
+    const cameraDropdown = document.createElement('select');
+    cameraDropdown.style.position = 'absolute';
+    cameraDropdown.style.bottom = '50px';
+    cameraDropdown.style.left = '10px';
+    cameraDropdown.style.zIndex = '1000';
+    cameraDropdown.style.padding = '2px';
+    cameraDropdown.style.backgroundColor = 'white';
+    cameraDropdown.style.border = '1px solid #ccc';
+
+    // Add default camera option
+    const defaultOption = document.createElement('option');
+    defaultOption.value = 'default';
+    defaultOption.text = 'Default Camera';
+    cameraDropdown.appendChild(defaultOption);
+
+    // Add model cameras
+    Object.keys(cameras).forEach(camKey => {
+        const option = document.createElement('option');
+        option.value = camKey;
+        option.text = camKey;
+        cameraDropdown.appendChild(option);
+    });
+
+    // Add event listener
+    cameraDropdown.addEventListener('change', (e) => {
+        currentCamera = e.target.value === 'default' ? camera : cameras[e.target.value];
+    });
+
+    document.body.appendChild(cameraDropdown);
 };
 
-let currentCamera = defcamera;
+// Audio
 
-// Ngày và hoàng hôn
-function toggelDayNight() {
-    isDay = !isDay;
-    if (isDay) {
-        scene.background = daybg;
-    }
-    else {
-        scene.background = duskbg;
-    }
-};
+function animate() {
+    requestAnimationFrame(animate);
+    if (mixer) {
+      mixer.update(clock.getDelta())
+    };
+    render();
+  };
+  
+  const clock = new THREE.Clock();
+  function render() {
+    renderer.render(page1scene, currentCamera || camera);
+  };
 
-const daybg = new THREE.CubeTextureLoader()
-    .setPath('./Tex/day_skybox')
-    .load([
-        'px.png',
-        'nx.png',
-        'py.png',
-        'ny.png',
-        'pz.png',
-        'nz.png'
-    ]);
-
-const duskbg = new THREE.CubeTextureLoader()
-    .setPath('./Tex/dusk_skybox')
-    .load([
-        'px.png',
-        'nx.png',
-        'py.png',
-        'ny.png',
-        'pz.png',
-        'nz.png'
-    ]);
-
-let isDay = true;
-let dayduskButton = document.getElementById('day-dusk');
+animate();
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});

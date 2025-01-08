@@ -1,4 +1,4 @@
-const pages = ['page1', 'page2', 'page3', 'page4', 'page5', 'page6'];
+const pages = ['page1', 'page2', 'page3', 'page4'];
 const container = document.getElementById('app');
 
 function loadPage(page) {
