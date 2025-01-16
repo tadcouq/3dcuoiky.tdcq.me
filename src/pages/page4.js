@@ -14,11 +14,15 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 const controls = new OrbitControls( camera, renderer.domElement );
-camera.position.set( 20, 5, 200 );
+camera.position.set( -10, 5, -10 );
 controls.update();
 
-const light = new THREE.AmbientLight( 0x404040 ); // soft white light
+const light = new THREE.AmbientLight( 0x404040, -0.01 ); // soft white light
 scene.add( light );
+const directionalLight = new THREE.DirectionalLight( 0xff0000, 100000 );
+directionalLight.position.set(12.388, 3.760, -18);
+directionalLight.castShadow = true;
+scene.add( directionalLight );
 
 // Skybox background
 const bg = new THREE.CubeTextureLoader()
@@ -42,8 +46,9 @@ loader.load(
 	'./3D/04_andinh_palace.glb',
 	// called when the resource is loaded
 	function ( gltf ) {
-
-		scene.add( gltf.scene );
+    const model = gltf.scene;
+		scene.add( model );
+    model.rotation.x = -0.04;
 	},
 	// called while loading is progressing
 	function ( xhr ) {
