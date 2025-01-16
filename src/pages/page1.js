@@ -126,7 +126,7 @@ rb19.setDRACOLoader( rb19DracoLoader );
 
 let mixer;
 rb19.load(
-    './3D/01_rb19.glb',
+    './3D/testplaygound.glb',
 
     function ( gltf ) {
         const model = gltf.scene;
