@@ -198,8 +198,8 @@ function animate() {
     render();
   };
   
-  const clock = new THREE.Clock();
-  function render() {
+const clock = new THREE.Clock();
+function render() {
     renderer.render(page1scene, currentCamera || camera);
   };
 
