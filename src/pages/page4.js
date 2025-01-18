@@ -69,7 +69,7 @@ function animate() {
     render();
   };
   function render() {
-    renderer.render(scene, camera || camera);
+    renderer.render(scene, camera);
   };
 
 animate();

@@ -126,7 +126,7 @@ rb19.setDRACOLoader( rb19DracoLoader );
 
 let mixer;
 rb19.load(
-    './3D/testplaygound.glb',
+    './3D/01_rb19.glb',
 
     function ( gltf ) {
         const model = gltf.scene;
@@ -189,6 +189,28 @@ function createCameraDropdown() {
 };
 
 // Audio
+const listener = new THREE.AudioListener();
+currentCamera.add( listener );
+
+const sound = new THREE.Audio( listener );
+const sound2 = new THREE.Audio( listener );
+
+const audioLoader = new THREE.AudioLoader();
+
+audioLoader.load( './Audio/01_V6HybridEngines.mp3', function( buffer ) {
+    sound.setBuffer( buffer );
+    sound.setLoop( true );
+    sound.setVolume( 0.2 );
+    sound.play();
+});
+
+const audioLoader2 = new THREE.AudioLoader();
+audioLoader2.load( './Audio/wind.mp3', function( buffer ) {
+    sound2.setBuffer( buffer );
+    sound2.setLoop( true );
+    sound2.setVolume( 1 );
+    sound2.play();
+});
 
 function animate() {
     requestAnimationFrame(animate);
