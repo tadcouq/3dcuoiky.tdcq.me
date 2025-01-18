@@ -156,6 +156,40 @@ rb19.load(
     }
 );
 
+// Maybay
+const maybay = new GLTFLoader();
+const maybayDracoLoader = new DRACOLoader();
+maybayDracoLoader.setDecoderPath( '/draco/' );
+maybay.setDRACOLoader( maybayDracoLoader );
+
+let mixer2;
+maybay.load(
+    './3D/01_may_bay.glb',
+
+    function ( gltf ) {
+        const model = gltf.scene;
+
+        const animation = gltf.animations;
+        if (animation && animation.length) {
+            mixer2 = new THREE.AnimationMixer(model);
+            animation.forEach((clip) => {
+                mixer2.clipAction(clip).play();
+            });
+        }
+
+        page1scene.add(model);
+    },
+
+    function ( xhr ) {
+        console.log( ( xhr.loaded / xhr.total * 100 ) + '% maybay loaded' );
+    },
+
+    function ( error ) {
+        console.error( 'maybay: An error happened, better check the fukin code again' );    
+    }
+);
+
+
 function createCameraDropdown() {
     const cameraDropdown = document.createElement('select');
     cameraDropdown.style.position = 'absolute';
@@ -212,14 +246,18 @@ audioLoader2.load( './Audio/wind.mp3', function( buffer ) {
     sound2.play();
 });
 
+// Animation
 function animate() {
     requestAnimationFrame(animate);
+    const delta = clock.getDelta();
     if (mixer) {
-      mixer.update(clock.getDelta())
-    };
+        mixer.update(delta);
+    }
+    if (mixer2) {
+        mixer2.update(delta);
+    }
     render();
-  };
-  
+};
 const clock = new THREE.Clock();
 function render() {
     renderer.render(page1scene, currentCamera || camera);
