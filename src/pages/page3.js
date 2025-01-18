@@ -1,7 +1,6 @@
 // AUTHOR: NGUYỄN NGỌC HẢI - 20231588
-/*
-XẠO LZ Ở ĐÂY
-*/
+/*Mục tiêu: Bảo tàng Hùng Vương được ví như một “cuốn sử bằng hiện vật” khi lưu giữ và trưng bày hàng nghìn hiện vật gốc quý hiếm, 
+tái hiện rõ nét lịch sử hình thành, phát triển của tỉnh Phú Thọ từ thời Hùng Vương dựng nước cho đến ngày nay.*/
 // ĐỊA ĐIỂM: Bảo tàng Hùng Vương, Phú Thọ
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
