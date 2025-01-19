@@ -1,4 +1,10 @@
 //AUTHOR: TRẦN ĐÌNH TÙNG - 20231646
+/*
+Câu chuyện: Tòa nhà Trung tâm THVN chính thức đi vào hoạt động nhân kỷ niệm 47 năm ngày phát sóng chương trình truyền hình đầu tiên.
+Sự kiện này đánh dấu một mốc quan trọng trong sự phát triển của Đài Truyền hình Việt Nam (VTV), với cơ sở hạ tầng hiện đại,
+phục vụ cho công tác sản xuất, phát sóng các chương trình truyền hình. Tòa nhà được thiết kế với các trang thiết bị tiên tiến,
+đáp ứng nhu cầu phát triển công nghệ và truyền thông trong kỷ nguyên số.
+*/
 //setup environment
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
