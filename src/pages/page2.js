@@ -10,7 +10,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { Clock } from 'three';
 
 export function init(container) {
     const scene = new THREE.Scene();
@@ -141,6 +140,7 @@ export function init(container) {
         });
         scene.add(model);
     })
+    
     //Add sound
     const listener = new THREE.AudioListener();
     camera.add( listener );

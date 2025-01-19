@@ -39,14 +39,11 @@ export function init(container) {
     controls.update();
 
     // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
     page1scene.add(ambientLight);
 
-    const daylight = new THREE.HemisphereLight(0xffffff, 0x000000, 1);
-    page1scene.add(daylight);
-
     const directionalLight = new THREE.DirectionalLight(0xffffff, 3);
-    directionalLight.position.set(3.52, 10.51, 10);
+    directionalLight.position.set(12.388, 5.760, -15);
     directionalLight.castShadow = true;
     directionalLight.shadow.camera.top = 2;
     directionalLight.shadow.camera.bottom = -2;
@@ -106,6 +103,7 @@ export function init(container) {
             const model = gltf.scene;
             model.position.set(0, 0, 0);
             model.scale.set(1, 1, 1);
+            model.receiveShadow = true;
             page1scene.add(model);
         },
 
@@ -222,6 +220,16 @@ export function init(container) {
 
         document.body.appendChild(cameraDropdown);
     };
+
+    // Ball
+    const sphere = new THREE.SphereGeometry( 1, 32, 32 );
+    const texture = new THREE.TextureLoader().load( './Tex/soccer.jpg' );
+    const material = new THREE.MeshPhongMaterial( { map: texture } );
+    const ball = new THREE.Mesh( sphere, material );
+    ball.position.set(0, 0.012, 0);
+    ball.scale.set(0.01, 0.01, 0.01);
+    ball.castShadow = true;
+    page1scene.add( ball );
 
     // Audio
     const listener = new THREE.AudioListener();
