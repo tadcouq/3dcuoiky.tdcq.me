@@ -260,14 +260,14 @@ export function init(container) {
         requestAnimationFrame(animate);
         const delta = clock.getDelta();
         if (mixer) {
-            mixer.update(delta);
+            mixer.update(delta);  // update animation for rb19
         }
         if (mixer2) {
-            mixer2.update(delta);
+            mixer2.update(delta); // update animation for maybay
         }
         render();
     };
-    const clock = new THREE.Clock();
+    const clock = new THREE.Clock(); // for mixer update
     function render() {
         renderer.render(page1scene, currentCamera || camera);
     };
